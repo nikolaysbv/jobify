@@ -1,11 +1,17 @@
 import { StatusCodes } from "http-status-codes"
 import User from "../models/User.js"
+import { BadRequestError, NotFoundError } from "../errors/index.js"
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
-    throw new Error("please provide all values")
+    throw new BadRequestError("please provide all values")
+  }
+
+  const userAlreadyExists = await User.findOne({ email })
+  if (userAlreadyExists) {
+    throw new BadRequestError("Email already in use")
   }
 
   const user = await User.create({ name, email, password })
