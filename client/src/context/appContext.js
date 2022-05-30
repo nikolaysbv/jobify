@@ -4,12 +4,9 @@ import reducer from "./reducer"
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
-  REGISTER_USER_BEGIN,
-  REGISTER_USER_SUCCESS,
-  REGISTER_USER_ERROR,
-  LOGIN_USER_BEGIN,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_ERROR,
+  SETUP_USER_BEGIN,
+  SETUP_USER_SUCCESS,
+  SETUP_USER_ERROR,
 } from "./actions"
 
 const token = localStorage.getItem("token")
@@ -57,40 +54,20 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("location")
   }
 
-  // registering user
-  const registerUser = async (currentUser) => {
-    dispatch({ type: REGISTER_USER_BEGIN })
+  // getting user
+  const setupUser = async ({ currentUser, endPoint, alertText }) => {
+    dispatch({ type: SETUP_USER_BEGIN })
     try {
-      const response = await axios.post("/api/v1/auth/register", currentUser)
-      const { user, token, location } = response.data
-      dispatch({
-        type: REGISTER_USER_SUCCESS,
-        payload: { user, token, location },
-      })
-      addUserToLocalStorage({ user, token, location })
-    } catch (error) {
-      dispatch({
-        type: REGISTER_USER_ERROR,
-        payload: { msg: error.response.data.msg },
-      })
-    }
-    clearAlert()
-  }
-
-  // logginng in user
-  const loginUser = async (currentUser) => {
-    dispatch({ type: LOGIN_USER_BEGIN })
-    try {
-      const { data } = await axios.post("/api/v1/auth/login", currentUser)
+      const { data } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser)
       const { user, token, location } = data
       dispatch({
-        type: LOGIN_USER_SUCCESS,
-        payload: { user, token, location },
+        type: SETUP_USER_SUCCESS,
+        payload: { user, token, location, alertText },
       })
       addUserToLocalStorage({ user, token, location })
     } catch (error) {
       dispatch({
-        type: LOGIN_USER_ERROR,
+        type: SETUP_USER_ERROR,
         payload: { msg: error.response.data.msg },
       })
     }
@@ -98,9 +75,7 @@ const AppProvider = ({ children }) => {
   }
 
   return (
-    <AppContext.Provider
-      value={{ ...state, displayAlert, registerUser, loginUser }}
-    >
+    <AppContext.Provider value={{ ...state, displayAlert, setupUser }}>
       {children}
     </AppContext.Provider>
   )
