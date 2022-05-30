@@ -1,6 +1,6 @@
 import Register from "./Register.js"
-import Dashboard from "./Dashboard.js"
 import Landing from "./Landing.js"
 import Error from "./Error.js"
+import ProtectedRoute from "./ProtectedRoute.js"
 
-export { Dashboard, Register, Landing, Error }
+export { Register, Landing, Error, ProtectedRoute }
