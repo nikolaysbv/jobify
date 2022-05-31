@@ -5,5 +5,15 @@ import Navbar from "./Navbar"
 import BigSidebar from "./BigSidebar"
 import SmallSidebar from "./SmallSidebar"
 import NavLinks from "./NavLinks"
+import FormRowSelect from "./FormRowSelect"
 
-export { Logo, FormRow, Alert, Navbar, BigSidebar, SmallSidebar, NavLinks }
+export {
+  Logo,
+  FormRow,
+  Alert,
+  Navbar,
+  BigSidebar,
+  SmallSidebar,
+  NavLinks,
+  FormRowSelect,
+}
