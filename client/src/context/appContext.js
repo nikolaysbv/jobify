@@ -17,6 +17,8 @@ import {
   CREATE_JOB_BEGIN,
   CREATE_JOB_SUCCESS,
   CREATE_JOB_ERROR,
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS,
 } from "./actions"
 
 const token = localStorage.getItem("token")
@@ -41,6 +43,10 @@ const initialState = {
   jobType: "full-time",
   statusOptions: ["pending", "interview", "declined"],
   status: "pending",
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
 }
 
 const AppContext = React.createContext()
@@ -156,14 +162,17 @@ const AppProvider = ({ children }) => {
     removeUserFromLocalStorage()
   }
 
+  // handle change in form
   const handleChange = ({ value, name }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } })
   }
 
+  // clear values in form
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES })
   }
 
+  // create job
   const createJob = async () => {
     dispatch({ type: CREATE_JOB_BEGIN })
     try {
@@ -187,6 +196,33 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  // get all user jobs
+  const getJobs = async () => {
+    let url = `/jobs`
+
+    dispatch({ type: GET_JOBS_BEGIN })
+    try {
+      const { data } = await authFetch(url)
+      const { jobs, totalJobs, numOfPages } = data
+      dispatch({
+        type: GET_JOBS_SUCCESS,
+        payload: { jobs, totalJobs, numOfPages },
+      })
+    } catch (error) {
+      console.log(error.response)
+      logoutUser()
+    }
+    clearAlert()
+  }
+
+  const setEditJob = (id) => {
+    console.log(`set edit job : ${id}`)
+  }
+
+  const deleteJob = (id) => {
+    console.log(`delete job : ${id}`)
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -199,6 +235,9 @@ const AppProvider = ({ children }) => {
         handleChange,
         clearValues,
         createJob,
+        getJobs,
+        setEditJob,
+        deleteJob,
       }}
     >
       {children}
