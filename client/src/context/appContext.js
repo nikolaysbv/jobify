@@ -32,6 +32,37 @@ const AppContext = React.createContext()
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  // axios
+  const authFetch = axios.create({
+    baseURL: "/api/v1",
+  })
+
+  // req interceptors
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers.common["Authorization"] = `Bearer ${state.token}`
+      return config
+    },
+    (error) => {
+      return Promise.reject(error)
+    }
+  )
+
+  // res interceptors
+
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response
+    },
+    (error) => {
+      console.log(error.response)
+      if (error.response.status === 401) {
+        console.log("AUTH ERROR")
+      }
+      return Promise.reject(error)
+    }
+  )
+
   // alert functions
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT })
@@ -44,7 +75,7 @@ const AppProvider = ({ children }) => {
     }, 3000)
   }
 
-  // saving/removing data from local storage
+  // save/remove data from local storage
   const addUserToLocalStorage = ({ user, token, location }) => {
     localStorage.setItem("user", JSON.stringify(user))
     localStorage.setItem("token", token)
@@ -57,7 +88,7 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("location")
   }
 
-  // getting user
+  // get user
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
     try {
@@ -77,8 +108,14 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  // updating user
+  // update user
   const updateUser = async (currentUser) => {
+    try {
+      const { data } = await authFetch.patch("/auth/updateUser", currentUser)
+      console.log(data)
+    } catch (error) {
+      // console.log(error)
+    }
     console.log(currentUser)
   }
 
@@ -87,6 +124,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
+  // logout user
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER })
     removeUserFromLocalStorage()
