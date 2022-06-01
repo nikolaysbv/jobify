@@ -1,13 +1,17 @@
-import { useEffect } from "react"
+import { useEffect, useCallback } from "react"
 import { useAppContext } from "../../context/appContext"
 import { StatsContainer, Loading, ChartsContainer } from "../../components"
 
 const Stats = () => {
   const { showStats, isLoading, monthlyApplications } = useAppContext()
 
-  useEffect(() => {
+  const showStatsCallback = useCallback(() => {
     showStats()
   }, [])
+
+  useEffect(() => {
+    showStatsCallback()
+  }, [showStatsCallback])
 
   if (isLoading) {
     return <Loading center />

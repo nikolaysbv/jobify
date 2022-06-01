@@ -1,5 +1,5 @@
 import { useAppContext } from "../context/appContext"
-import { useEffect } from "react"
+import { useEffect, useCallback } from "react"
 import Loading from "./Loading"
 import Job from "./Job"
 import Wrapper from "../assets/wrappers/JobsContainer"
@@ -19,9 +19,13 @@ const JobsContainer = () => {
     numOfPages,
   } = useAppContext()
 
-  useEffect(() => {
+  const getJobsCallback = useCallback(() => {
     getJobs()
   }, [page, search, searchStatus, searchType, sort])
+
+  useEffect(() => {
+    getJobsCallback()
+  }, [getJobsCallback])
 
   if (isLoading) {
     return <Loading center />
