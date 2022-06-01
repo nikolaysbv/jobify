@@ -27,6 +27,7 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
+  CHANGE_PAGE,
 } from "./actions"
 
 const token = localStorage.getItem("token")
@@ -213,8 +214,8 @@ const AppProvider = ({ children }) => {
 
   // get all user jobs
   const getJobs = async () => {
-    const { search, searchStatus, searchType, sort } = state
-    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+    const { page, search, searchStatus, searchType, sort } = state
+    let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
     if (search) {
       url += `&search=${search}`
     }
@@ -234,10 +235,12 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  // set the job to be edited
   const setEditJob = (id) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } })
   }
 
+  // edit job
   const editJob = async () => {
     dispatch({ type: EDIT_JOB_BEGIN })
     try {
@@ -261,6 +264,7 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  // delete job
   const deleteJob = async (jobId) => {
     dispatch({ type: DELETE_JOB_BEGIN })
     try {
@@ -272,6 +276,7 @@ const AppProvider = ({ children }) => {
     }
   }
 
+  // get stats
   const showStats = async () => {
     dispatch({ type: SHOW_STATS_BEGIN })
     try {
@@ -290,8 +295,13 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  // clear search form filters
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS })
+  }
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
   return (
@@ -312,6 +322,7 @@ const AppProvider = ({ children }) => {
         editJob,
         showStats,
         clearFilters,
+        changePage,
       }}
     >
       {children}
