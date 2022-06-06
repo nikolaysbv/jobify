@@ -38,6 +38,11 @@ const UserSchema = new mongoose.Schema({
     maxlength: 20,
     default: "my city",
   },
+  currency: {
+    type: String,
+    enum: ["BGN", "USD", "EUR"],
+    default: "USD",
+  },
 })
 
 UserSchema.pre("save", async function () {

@@ -14,7 +14,7 @@ const JobSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["interview", "declined", "pending"],
+      enum: ["interview", "declined", "pending", "accepted"],
       default: "pending",
     },
     jobType: {
@@ -26,6 +26,17 @@ const JobSchema = new mongoose.Schema(
       type: String,
       default: "my city",
       required: true,
+    },
+    salary: {
+      type: Number,
+      default: 0,
+    },
+    jobDescription: {
+      type: String,
+      maxlength: 300,
+    },
+    notes: {
+      type: String,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
