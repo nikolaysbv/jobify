@@ -76,4 +76,27 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location })
 }
 
-export { register, login, updateUser }
+const changePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body
+  if (!oldPassword || !newPassword) {
+    throw new BadRequestError("Please provide all values")
+  }
+
+  const user = await User.findOne({ _id: req.user.userId }).select("+password")
+  if (!user) {
+    throw new UnauthenticatedError("Invalid Credentials")
+  }
+
+  const isPasswordCorrect = await user.comparePassword(oldPassword)
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError("Invalid Credentials")
+  }
+
+  user.password = newPassword
+
+  await user.save()
+
+  res.status(StatusCodes.OK).json({ msg: "Password successfully changed!" })
+}
+
+export { register, login, updateUser, changePassword }
