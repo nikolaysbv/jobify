@@ -49,7 +49,7 @@ const SearchContainer = () => {
             name="searchType"
             value={searchType}
             handleChange={handleSearch}
-            list={["all", ...statusOptions]}
+            list={["all", ...jobTypeOptions]}
           />
           <FormRowSelect
             name="sort"
