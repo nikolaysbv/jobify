@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from "react"
+import React, { useReducer, useContext, useState } from "react"
 import axios from "axios"
 import reducer from "./reducer"
 import {
@@ -69,6 +69,7 @@ const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const [intentionalSearchDelay, setIntentionalSearchDelay] = useState()
 
   // axios
   const authFetch = axios.create({
@@ -222,6 +223,12 @@ const AppProvider = ({ children }) => {
 
     dispatch({ type: GET_JOBS_BEGIN })
     try {
+      // intentional delay for better user experience with search
+      clearTimeout(intentionalSearchDelay)
+      await new Promise((resolve) => {
+        setIntentionalSearchDelay(setTimeout(resolve, 1500))
+      })
+
       const { data } = await authFetch(url)
       const { jobs, totalJobs, numOfPages } = data
       dispatch({
