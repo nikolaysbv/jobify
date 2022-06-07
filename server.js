@@ -6,6 +6,7 @@ dotenv.config()
 
 import "express-async-errors"
 import morgan from "morgan"
+import fileUpload from "express-fileupload"
 
 // necessary in order to serve static assets
 import { dirname } from "path"
@@ -40,6 +41,7 @@ app.use(helmet())
 app.use(xss())
 app.use(mongoSanitize())
 app.use(express.static(path.resolve(__dirname, "./client/build")))
+app.use(fileUpload())
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/jobs", authenticateUser, jobsRouter)

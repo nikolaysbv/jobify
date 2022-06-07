@@ -14,6 +14,7 @@ import {
   login,
   updateUser,
   changePassword,
+  uploadImage,
 } from "../controllers/authController.js"
 import authenticateUser from "../middleware/auth.js"
 
@@ -21,5 +22,6 @@ router.route("/register").post(apiLimiter, register)
 router.route("/login").post(apiLimiter, login)
 router.route("/updateUser").patch(authenticateUser, updateUser)
 router.route("/changePassword").patch(authenticateUser, changePassword)
+router.route("/uploadImage").post(authenticateUser, uploadImage)
 
 export default router

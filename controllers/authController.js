@@ -5,6 +5,7 @@ import {
   NotFoundError,
   UnauthenticatedError,
 } from "../errors/index.js"
+import deletePreviousUserImage from "../utils/deletePreviousUserImage.js"
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body
@@ -59,11 +60,23 @@ const login = async (req, res) => {
 const updateUser = async (req, res) => {
   const { email, name, lastName, location, currency, image, profession, bio } =
     req.body
-  if (!email || !name || !lastName || !location) {
+  const userId = req.user.userId
+
+  if (
+    !email ||
+    !name ||
+    !lastName ||
+    !location ||
+    !currency ||
+    !image ||
+    !profession
+  ) {
     throw new BadRequestError("Please provide all values")
   }
 
-  const user = await User.findOne({ _id: req.user.userId })
+  deletePreviousUserImage(userId, image)
+
+  const user = await User.findOne({ _id: userId })
 
   user.email = email
   user.name = name
@@ -71,7 +84,7 @@ const updateUser = async (req, res) => {
   user.location = location
   user.currency = currency
   user.image = image
-  user.profession = profession ? profession : "Not specified"
+  user.profession = profession
   user.bio = bio
 
   await user.save()
@@ -104,4 +117,31 @@ const changePassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Password successfully changed!" })
 }
 
-export { register, login, updateUser, changePassword }
+const uploadImage = async (req, res) => {
+  if (!req.files) {
+    throw new BadRequestError("No File Uploaded")
+  }
+  const productImage = req.files.image
+
+  if (!productImage.mimetype.startsWith("image")) {
+    throw new BadRequestError("Please Upload Image")
+  }
+
+  const maxSize = 1024 * 1024 * 10
+
+  if (productImage.size > maxSize) {
+    throw new BadRequestError("Please upload image smaller than 10MB")
+  }
+
+  const imagePath = new URL(
+    `../client/public/uploads/${req.user.userId}-${productImage.name}`,
+    import.meta.url
+  )
+  await productImage.mv(imagePath)
+
+  res
+    .status(StatusCodes.OK)
+    .json({ image: `/uploads/${req.user.userId}-${productImage.name}` })
+}
+
+export { register, login, updateUser, changePassword, uploadImage }
