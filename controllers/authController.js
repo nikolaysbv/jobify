@@ -57,8 +57,9 @@ const login = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-  const { email, name, lastName, location, currency } = req.body
-  if (!email || !name || !lastName || !location || !currency) {
+  const { email, name, lastName, location, currency, image, profession, bio } =
+    req.body
+  if (!email || !name || !lastName || !location) {
     throw new BadRequestError("Please provide all values")
   }
 
@@ -69,6 +70,9 @@ const updateUser = async (req, res) => {
   user.lastName = lastName
   user.location = location
   user.currency = currency
+  user.image = image
+  user.profession = profession ? profession : "Not specified"
+  user.bio = bio
 
   await user.save()
 

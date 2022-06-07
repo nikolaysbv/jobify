@@ -3,6 +3,11 @@ import validator from "validator"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
+import { readFile } from "fs/promises"
+const professions = JSON.parse(
+  await readFile(new URL("../data/professions.json", import.meta.url))
+)
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -42,6 +47,19 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ["BGN", "USD", "EUR"],
     default: "USD",
+  },
+  profession: {
+    type: String,
+    enum: [...professions.occupations, "Not specified"],
+    default: "Not specified",
+  },
+  bio: {
+    type: String,
+    maxlength: 300,
+  },
+  image: {
+    type: String,
+    default: "/uploads/example.webp",
   },
 })
 
