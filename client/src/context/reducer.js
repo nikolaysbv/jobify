@@ -25,6 +25,7 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
+  TOGGLE_REGISTER_MODAL,
 } from "./actions"
 
 import { initialState } from "./appContext"
@@ -259,6 +260,10 @@ const reducer = (state, action) => {
 
   if (action.type === CHANGE_PAGE) {
     return { ...state, page: action.payload.page }
+  }
+
+  if (action.type === TOGGLE_REGISTER_MODAL) {
+    return { ...state, isRegisterModalActive: !state.isRegisterModalActive }
   }
 
   throw new Error(`no such action : ${action.type}`)

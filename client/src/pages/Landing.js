@@ -1,19 +1,18 @@
-import main from "../assets/images/main.svg"
 import Wrapper from "../assets/wrappers/LandingPage"
-import { Logo, FunctionsDescriptionContainer } from "../components"
+import { useAppContext } from "../context/appContext"
 import { Link } from "react-router-dom"
 import * as Scroll from "react-scroll"
+import {
+  Logo,
+  FunctionsDescriptionContainer,
+  RegisterModal,
+} from "../components"
 import { HiOutlineArrowNarrowRight } from "react-icons/hi"
 import { AiFillGithub, AiFillLinkedin, AiOutlineMail } from "react-icons/ai"
 import authorImg from "../assets/images/author.jpg"
 
 const Landing = () => {
-  const vh = Math.max(
-    document.documentElement.clientHeight || 0,
-    window.innerHeight || 0
-  )
-
-  console.log(0.2 * vh)
+  const { isRegisterModalActive, toggleRegisterModal } = useAppContext()
 
   return (
     <Wrapper>
@@ -25,6 +24,7 @@ const Landing = () => {
         </div>
       </nav>
       <div className="page container">
+        {isRegisterModalActive && <RegisterModal />}
         <Scroll.Element name="hero">
           <article className="hero">
             <h1>Your Job Organizer</h1>
@@ -35,14 +35,12 @@ const Landing = () => {
             </p>
             <h4>So you never forget which job you applied to again.</h4>
             <div className="btn-container">
-              <Link to="/register">
-                <button className="btn">
-                  Try It{" "}
-                  <span>
-                    <HiOutlineArrowNarrowRight />
-                  </span>
-                </button>
-              </Link>
+              <button className="btn" onClick={toggleRegisterModal}>
+                Try It{" "}
+                <span>
+                  <HiOutlineArrowNarrowRight />
+                </span>
+              </button>
               <Scroll.Link
                 to="description"
                 smooth="easeInOutCubic"

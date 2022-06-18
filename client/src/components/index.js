@@ -12,6 +12,7 @@ import StatsContainer from "./StatsContainer"
 import ChartsContainer from "./ChartsContainer"
 import Loading from "./Loading"
 import FunctionsDescriptionContainer from "./FunctionsDescriptionContainer"
+import RegisterModal from "./RegisterModal"
 
 export {
   Logo,
@@ -28,4 +29,5 @@ export {
   ChartsContainer,
   Loading,
   FunctionsDescriptionContainer,
+  RegisterModal,
 }

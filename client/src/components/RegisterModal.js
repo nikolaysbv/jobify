@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { Logo, FormRow, Alert } from "../components"
-import Wrapper from "../assets/wrappers/RegisterPage"
+import Wrapper from "../assets/wrappers/RegisterModal"
 import { useAppContext } from "../context/appContext"
 
 const initialState = {
@@ -11,7 +11,7 @@ const initialState = {
   isMember: true,
 }
 
-const Register = () => {
+const RegisterModal = () => {
   const [values, setValues] = useState(initialState)
   const navigate = useNavigate()
   const {
@@ -102,4 +102,4 @@ const Register = () => {
     </Wrapper>
   )
 }
-export default Register
+export default RegisterModal

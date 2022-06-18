@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
-import { Landing, Register, Error, ProtectedRoute } from "./pages"
+import { Landing, Error, ProtectedRoute } from "./pages"
 import {
   AllJobs,
   Profile,
@@ -25,7 +25,6 @@ function App() {
           <Route path="add-job" element={<AddJob />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-        <Route path="/register" element={<Register />}></Route>
         <Route path="/landing" element={<Landing />}></Route>
         <Route path="/*" element={<Error />}></Route>
       </Routes>

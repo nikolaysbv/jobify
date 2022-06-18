@@ -28,6 +28,7 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
+  TOGGLE_REGISTER_MODAL,
 } from "./actions"
 
 const token = localStorage.getItem("token")
@@ -63,6 +64,7 @@ const initialState = {
   searchType: "all",
   sort: "latest",
   sortOptions: ["latest", "oldest", "a-z", "z-a"],
+  isRegisterModalActive: false,
 }
 
 const AppContext = React.createContext()
@@ -308,6 +310,11 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
+  const toggleRegisterModal = () => {
+    console.log("first")
+    dispatch({ type: TOGGLE_REGISTER_MODAL })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -327,6 +334,7 @@ const AppProvider = ({ children }) => {
         showStats,
         clearFilters,
         changePage,
+        toggleRegisterModal,
       }}
     >
       {children}
