@@ -26,6 +26,7 @@ import {
   CLEAR_FILTERS,
   CHANGE_PAGE,
   TOGGLE_REGISTER_MODAL,
+  TOGGLE_MEMBER,
 } from "./actions"
 
 import { initialState } from "./appContext"
@@ -263,7 +264,15 @@ const reducer = (state, action) => {
   }
 
   if (action.type === TOGGLE_REGISTER_MODAL) {
-    return { ...state, isRegisterModalActive: !state.isRegisterModalActive }
+    return {
+      ...state,
+      isRegisterModalActive: !state.isRegisterModalActive,
+      isMember: action.payload.isMember,
+    }
+  }
+
+  if (action.type === TOGGLE_MEMBER) {
+    return { ...state, isMember: !state.isMember }
   }
 
   throw new Error(`no such action : ${action.type}`)

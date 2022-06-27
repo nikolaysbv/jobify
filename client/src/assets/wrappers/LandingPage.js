@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const Wrapper = styled.main`
-  background: var(--gradient-1);
+  /* background: var(--gradient-1); */
 
   span {
     position: relative;
@@ -9,20 +9,26 @@ const Wrapper = styled.main`
   }
 
   nav {
-    width: var(--fluid-width);
-    margin: 0 auto;
+    background: var(--gradient-2);
+    /* width: 100vw; */
+    padding: 0 5vw;
     height: var(--nav-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .logo {
-      height: 60%;
-      position: relative;
-      top: -0.75rem;
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .logo {
+        width: 220px;
+      }
     }
     .btn-container {
+      position: relative;
+      top: -0.25rem;
       height: 60%;
-      align-items: top;
+      align-items: center;
       display: flex;
       justify-content: space-between;
       .login {
@@ -56,16 +62,16 @@ const Wrapper = styled.main`
     justify-content: center;
     padding-bottom: 20vh;
     h1 {
-      color: var(--gradient-color-6);
+      color: var(--black);
       text-align: center;
       font-weight: 900;
     }
     p {
-      color: var(--gradient-color-6);
+      color: var(--black);
       text-align: center;
     }
     h4 {
-      color: var(--gradient-color-6);
+      color: var(--black);
     }
     .btn-container {
       display: flex;
@@ -76,7 +82,7 @@ const Wrapper = styled.main`
       .btn {
         background: transparent;
         border: none;
-        color: var(--gradient-color-6);
+        color: var(--black);
         box-shadow: none;
       }
     }

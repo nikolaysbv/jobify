@@ -17,14 +17,26 @@ const Landing = () => {
   return (
     <Wrapper>
       <nav>
-        <Logo></Logo>
+        <div className="logo-container">
+          <Logo></Logo>
+        </div>
         <div className="btn-container">
-          <button className="btn login">Log In</button>
-          <button className="btn signup">Sign Up</button>
+          <button
+            className="btn login"
+            onClick={() => toggleRegisterModal({ isMember: true })}
+          >
+            Log In
+          </button>
+          <button
+            className="btn signup"
+            onClick={() => toggleRegisterModal({ isMember: false })}
+          >
+            Sign Up
+          </button>
         </div>
       </nav>
       <div className="page container">
-        {isRegisterModalActive && <RegisterModal />}
+        <RegisterModal />
         <Scroll.Element name="hero">
           <article className="hero">
             <h1>Your Job Organizer</h1>
@@ -35,7 +47,10 @@ const Landing = () => {
             </p>
             <h4>So you never forget which job you applied to again.</h4>
             <div className="btn-container">
-              <button className="btn" onClick={toggleRegisterModal}>
+              <button
+                className="btn"
+                onClick={() => toggleRegisterModal({ isMember: true })}
+              >
                 Try It{" "}
                 <span>
                   <HiOutlineArrowNarrowRight />

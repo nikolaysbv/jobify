@@ -29,6 +29,7 @@ import {
   CLEAR_FILTERS,
   CHANGE_PAGE,
   TOGGLE_REGISTER_MODAL,
+  TOGGLE_MEMBER,
 } from "./actions"
 
 const token = localStorage.getItem("token")
@@ -65,6 +66,7 @@ const initialState = {
   sort: "latest",
   sortOptions: ["latest", "oldest", "a-z", "z-a"],
   isRegisterModalActive: false,
+  isMember: true,
 }
 
 const AppContext = React.createContext()
@@ -310,9 +312,12 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
-  const toggleRegisterModal = () => {
-    console.log("first")
-    dispatch({ type: TOGGLE_REGISTER_MODAL })
+  const toggleRegisterModal = ({ isMember }) => {
+    dispatch({ type: TOGGLE_REGISTER_MODAL, payload: { isMember } })
+  }
+
+  const toggleMember = () => {
+    dispatch({ type: TOGGLE_MEMBER })
   }
 
   return (
@@ -335,6 +340,7 @@ const AppProvider = ({ children }) => {
         clearFilters,
         changePage,
         toggleRegisterModal,
+        toggleMember,
       }}
     >
       {children}
